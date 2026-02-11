@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CodeAI Pro - Asisten AI Cerdas untuk Coding dengan fitur lengkap">
+    <meta name="keywords" content="AI, Coding, Assistant, Programming, Code Generator">
+    <meta name="author" content="CodeAI Pro Team">
+    <meta name="theme-color" content="#7c3aed">
+    
+    <title>CodeAI Pro - Asisten AI Cerdas untuk Coding</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="apple-touch-icon" href="assets/logo.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js for Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/themes.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="logo-animation">
+                <img src="assets/logo.png" alt="CodeAI Pro" class="loading-logo">
+                <div class="loading-pulse"></div>
+            </div>
+            <h2 class="loading-text">CodeAI Pro</h2>
+            <p class="loading-subtitle">Memuat Asisten AI...</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app" class="app hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar">
+            <!-- Sidebar Header -->
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="assets/logo.png" alt="CodeAI Pro" class="sidebar-logo">
+                    <div class="logo-text">
+                        <h1>CodeAI Pro</h1>
+                        <span class="version">v2.0</span>
+                    </div>
+                </div>
+                <button id="new-chat-btn" class="btn-new-chat">
+                    <i class="fas fa-plus"></i>
+                    <span>Chat Baru</span>
+                </button>
+            </div>
+
+            <!-- Chat History -->
+            <div class="sidebar-content">
+                <div class="history-section">
+                    <h3 class="history-title">
+                        <i class="fas fa-history"></i>
+                        Riwayat Chat
+                    </h3>
+                    <div id="chat-history" class="chat-history-list">
+                        <!-- Chat history items will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3 class="actions-title">
+                        <i class="fas fa-bolt"></i>
+                        Aksi Cepat
+                    </h3>
+                    <div class="action-buttons">
+                        <button class="action-btn" data-prompt="Buatkan saya website portfolio">
+                            <i class="fas fa-globe"></i>
+                            <span>Website Portfolio</span>
+                        </button>
+                        <button class="action-btn" data-prompt="Jelaskan cara kerja React Hooks">
+                            <i class="fab fa-react"></i>
+                            <span>React Hooks</span>
+                        </button>
+                        <button class="action-btn" data-prompt="Buat API REST dengan Node.js">
+                            <i class="fab fa-node-js"></i>
+                            <span>API Node.js</span>
+                        </button>
+                        <button class="action-btn" data-prompt="Optimasi kode Python saya">
+                            <i class="fab fa-python"></i>
+                            <span>Optimasi Python</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <button id="settings-btn" class="footer-btn">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </button>
+                <button id="theme-toggle" class="footer-btn">
+                    <i class="fas fa-moon"></i>
+                    <span>Tema</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <button id="sidebar-toggle" class="header-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-title">
+                    <span id="current-chat-title">Chat Baru</span>
+                </div>
+                <div class="header-actions">
+                    <button id="export-btn" class="header-btn" title="Export Chat">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button id="clear-btn" class="header-btn" title="Hapus Chat">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button id="share-btn" class="header-btn" title="Bagikan">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Chat Container -->
+            <div id="chat-container" class="chat-container">
+                <!-- Welcome Screen -->
+                <div id="welcome-screen" class="welcome-screen">
+                    <div class="welcome-content">
+                        <img src="assets/logo.png" alt="CodeAI Pro" class="welcome-logo">
+                        <h1 class="welcome-title">Selamat Datang di CodeAI Pro</h1>
+                        <p class="welcome-subtitle">Asisten AI cerdas khusus untuk coding dan programming</p>
+                        
+                        <div class="welcome-features">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <h3>Generate Kode</h3>
+                                <p>Buat kode dalam berbagai bahasa pemrograman</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-bug"></i>
+                                </div>
+                                <h3>Debug Kode</h3>
+                                <p>Temukan dan perbaiki error dalam kode Anda</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <h3>Belajar Coding</h3>
+                                <p>Pelajari konsep programming dengan mudah</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-rocket"></i>
+                                </div>
+                                <h3>Optimasi Kode</h3>
+                                <p>Tingkatkan performa kode Anda</p>
+                            </div>
+                        </div>
+
+                        <div class="welcome-suggestions">
+                            <p class="suggestions-title">Coba katakan:</p>
+                            <div class="suggestion-chips">
+                                <button class="suggestion-chip" data-prompt="Buatkan saya kalkulator dengan HTML, CSS, dan JavaScript">
+                                    <i class="fas fa-calculator"></i>
+                                    Buat kalkulator
+                                </button>
+                                <button class="suggestion-chip" data-prompt="Jelaskan perbedaan let, const, dan var di JavaScript">
+                                    <i class="fab fa-js"></i>
+                                    JS Variables
+                                </button>
+                                <button class="suggestion-chip" data-prompt="Buat CRUD API dengan Express.js dan MongoDB">
+                                    <i class="fas fa-database"></i>
+                                    CRUD API
+                                </button>
+                                <button class="suggestion-chip" data-prompt="Buat animasi loading dengan CSS">
+                                    <i class="fas fa-spinner"></i>
+                                    CSS Animation
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Messages -->
+                <div id="chat-messages" class="chat-messages hidden">
+                    <!-- Messages will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="message-input" 
+                            class="message-input" 
+                            placeholder="Ketik pesan Anda di sini... (Tekan Enter untuk mengirim, Shift+Enter untuk baris baru)"
+                            rows="1"
+                        ></textarea>
+                        <div class="input-actions">
+                            <button id="attach-btn" class="input-btn" title="Lampirkan File">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <button id="voice-btn" class="input-btn" title="Input Suara">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button id="send-btn" class="input-btn send-btn" title="Kirim Pesan">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-footer">
+                        <span class="input-hint">
+                            <i class="fas fa-info-circle"></i>
+                            CodeAI Pro dapat membuat kesalahan. Verifikasi informasi penting.
+                        </span>
+                        <span class="model-info">
+                            <i class="fas fa-microchip"></i>
+                            Model: CodeAI-Pro-v2
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-cog"></i> Pengaturan</h2>
+                    <button class="modal-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>Tampilan</h3>
+                        <div class="setting-item">
+                            <label>Tema</label>
+                            <select id="theme-select">
+                                <option value="dark">Dark (Ungu)</option>
+                                <option value="light">Light</option>
+                                <option value="blue">Blue Gradient</option>
+                                <option value="green">Green Gradient</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Ukuran Font Kode</label>
+                            <input type="range" id="font-size-slider" min="12" max="20" value="14">
+                            <span id="font-size-value">14px</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Animasi Ketikan</label>
+                            <label class="toggle">
+                                <input type="checkbox" id="typing-animation" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>AI & Model</h3>
+                        <div class="setting-item">
+                            <label>Temperature</label>
+                            <input type="range" id="temperature-slider" min="0" max="100" value="70">
+                            <span id="temperature-value">0.7</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Max Tokens</label>
+                            <select id="max-tokens">
+                                <option value="1024">1,024</option>
+                                <option value="2048" selected>2,048</option>
+                                <option value="4096">4,096</option>
+                                <option value="8192">8,192</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>Data & Privasi</h3>
+                        <div class="setting-item">
+                            <label>Simpan Riwayat Chat</label>
+                            <label class="toggle">
+                                <input type="checkbox" id="save-history" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <button id="clear-all-data" class="btn-danger">
+                            <i class="fas fa-trash-alt"></i>
+                            Hapus Semua Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Preview Modal -->
+        <div id="code-preview-modal" class="modal hidden">
+            <div class="modal-overlay"></div>
+            <div class="modal-content modal-large">
+                <div class="modal-header">
+                    <h2><i class="fas fa-code"></i> Pratinjau Kode</h2>
+                    <div class="modal-actions">
+                        <button id="copy-code-btn" class="btn-secondary">
+                            <i class="fas fa-copy"></i> Salin
+                        </button>
+                        <button id="download-code-btn" class="btn-secondary">
+                            <i class="fas fa-download"></i> Unduh
+                        </button>
+                        <button class="modal-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <pre id="code-preview-content" class="line-numbers"><code class="language-javascript"></code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toast-container" class="toast-container"></div>
+
+        <!-- Context Menu -->
+        <div id="context-menu" class="context-menu hidden">
+            <ul>
+                <li data-action="copy">
+                    <i class="fas fa-copy"></i> Salin
+                </li>
+                <li data-action="delete">
+                    <i class="fas fa-trash"></i> Hapus
+                </li>
+                <li data-action="rename">
+                    <i class="fas fa-edit"></i> Ganti Nama
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Prism.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-tsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/storage-manager.js"></script>
+    <script src="js/theme-manager.js"></script>
+    <script src="js/api-server.js"></script>
+    <script src="js/typing-animation.js"></script>
+    <script src="js/thinking-animation.js"></script>
+    <script src="js/code-highlighter.js"></script>
+    <script src="js/ui-components.js"></script>
+    <script src="js/chat-manager.js"></script>
+    <script src="js/file-manager.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/voice-input.js"></script>
+    <script src="js/export-manager.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

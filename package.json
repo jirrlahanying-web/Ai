@@ -1,0 +1,47 @@
+{
+  "name": "codeai-pro",
+  "version": "2.0.0",
+  "description": "Asisten AI Cerdas Khusus untuk Coding dan Programming",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx live-server --port=3000",
+    "dev": "npx live-server --port=3000 --watch",
+    "build": "echo 'Static site - no build needed'",
+    "test": "echo 'No tests specified'",
+    "lint": "echo 'No linter configured'"
+  },
+  "keywords": [
+    "ai",
+    "chatbot",
+    "coding",
+    "programming",
+    "assistant",
+    "code-generator",
+    "javascript",
+    "html",
+    "css",
+    "web-app"
+  ],
+  "author": "CodeAI Pro Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/codeai-pro.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/codeai-pro/issues"
+  },
+  "homepage": "https://codeai-pro.vercel.app",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {}
+}
